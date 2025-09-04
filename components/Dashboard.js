@@ -16,7 +16,8 @@ export default function Dashboard({ onLogout }) {
       id: uuid(),
       name,
       type,
-      url: `${window.location.origin}/track/${uuid()}`,
+      url: `https://pws-rust.vercel.app/track/${uuid()}`,
+
       status: 'offline',
       created: new Date().toISOString(),
       lastSeen: null,
