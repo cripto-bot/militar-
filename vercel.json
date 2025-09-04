@@ -1,9 +1,8 @@
-
 {
   "routes": [
     { "src": "/api/last", "dest": "/panel/pages/api/last.js" },
     { "src": "/api/ingest", "dest": "/panel/pages/api/ingest.js" },
-    { "src": "/track/(.*)", "dest": "/tracker/index.html" },
+    { "src": "/track/(.*)", "dest": "/public/track/index.html" },
     { "src": "/(.*)", "dest": "/panel/$1" }
   ]
 }
