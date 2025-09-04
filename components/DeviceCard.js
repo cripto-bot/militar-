@@ -1,8 +1,9 @@
-import { Eye, Mic, Video, Trash2, ExternalLink, Copy } from 'lucide-react';
-import { useState } from 'react';
+import { Eye, Mic, Video, Trash2, ExternalLink, Copy, MapPin, Volume2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function DeviceCard({ device, onDelete }) {
   const [copied, setCopied] = useState(false);
+  const [live, setLive] = useState(null);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(device.url);
@@ -10,20 +11,53 @@ export default function DeviceCard({ device, onDelete }) {
     setTimeout(() => setCopied(false), 1500);
   };
 
+  // polling cada 3s
+  useEffect(() => {
+    const id = device.id;
+    const t = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/last?id=${id}`);
+        const data = await res.json();
+        setLive(data);
+      } catch {
+        setLive(null);
+      }
+    }, 3000);
+    return () => clearInterval(t);
+  }, [device.id]);
+
   return (
     <div className="bg-gray-900 border border-green-700 p-4 rounded hover:border-green-500 transition">
       <div className="flex justify-between mb-2">
         <h3 className="font-bold text-green-400">{device.name}</h3>
         <span
           className={`text-xs px-2 py-1 rounded ${
-            device.status === 'online' ? 'bg-green-800' : 'bg-red-800'
+            live ? 'bg-green-800' : 'bg-red-800'
           }`}
         >
-          {device.status}
+          {live ? 'online' : 'offline'}
         </span>
       </div>
 
       <p className="text-xs text-green-600 mb-2">ID: {device.id}</p>
+
+      {/* DATOS EN VIVO */}
+      {live && (
+        <>
+          {live.type === 'geo' && (
+            <div className="flex items-center gap-2 mb-2 text-xs text-green-300">
+              <MapPin size={12} />
+              {live.lat.toFixed(5)}, {live.lon.toFixed(5)}
+            </div>
+          )}
+          {live.type === 'audio' && (
+            <div className="flex items-center gap-2 mb-2 text-xs text-green-300">
+              <Volume2 size={12} />
+              Vol: {live.volume.toFixed(1)}
+            </div>
+          )}
+        </>
+      )}
 
       <div className="flex items-center gap-2 mb-3">
         <a
