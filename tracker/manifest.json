@@ -1,0 +1,16 @@
+{
+  "name": "ST",
+  "short_name": "ST",
+  "display": "standalone",
+  "start_url": ".",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
