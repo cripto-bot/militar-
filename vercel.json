@@ -1,0 +1,6 @@
+{
+  "routes": [
+    { "src": "/track/(.*)", "dest": "/tracker/index.html" },
+    { "src": "/api/ingest", "dest": "/panel/pages/api/ingest.js" }
+  ]
+}
